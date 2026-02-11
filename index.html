@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>You Have Been Beautiful</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="scanlines">
+  <!-- SVG filter for pixelation -->
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="pixelate" x="-20%" y="-20%" width="140%" height="140%">
+      <!-- Increase radius for heavier pixelation -->
+      <feMorphology in="SourceGraphic" operator="dilate" radius="6" result="dilated"/>
+      <!-- Posterize-ish (more crunchy/8-bit look) -->
+      <feComponentTransfer in="dilated" result="poster">
+        <feFuncR type="discrete" tableValues="0 0.25 0.5 0.75 1"/>
+        <feFuncG type="discrete" tableValues="0 0.25 0.5 0.75 1"/>
+        <feFuncB type="discrete" tableValues="0 0.25 0.5 0.75 1"/>
+        <feFuncA type="table" tableValues="0 1"/>
+      </feComponentTransfer>
+      <!-- Edge hardening -->
+      <feConvolveMatrix in="poster" order="3" kernelMatrix="
+        0 -1  0
+       -1  5 -1
+        0 -1  0" result="sharp"/>
+      <feMerge>
+        <feMergeNode in="sharp"/>
+      </feMerge>
+    </filter>
+  </svg>
+
+  <main class="wrap">
+    <div class="stack">
+      <div class="pixelated">
+        <div class="glitch" data-text="you have been beautiful">
+          you have been beautiful
+          <span aria-hidden="true">you have been beautiful</span>
+        </div>
+      </div>
+
+      <!-- Cat image under the text -->
+      <img class="photo" src="assets/cat.png" alt="Cat" />
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
